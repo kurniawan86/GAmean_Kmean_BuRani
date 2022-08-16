@@ -6,13 +6,15 @@ import math
 from matplotlib import pyplot as plt
 
 class gen:
-    __ndim = None
+    __nfeature = None
+    __ncluster = None
     __bound = None
     position = []
     fitness = 0
     
-    def __init__(self, nDim, bound=None):
-        self.__ndim = nDim
+    def __init__(self, nfeature,ncluster, bound=None):
+        self.__nfeature = nfeature
+        self.__ncluster=ncluster
         self.__bound = bound
         self.__initPosition()
 
@@ -24,18 +26,29 @@ class gen:
 
     def __initPositionBound(self):
         gen = []
-        mini = self.__bound[0]
-        maxi = self.__bound[1]
-        for i in range(self.__ndim):
-            ind = random.randint(mini, maxi-1)
-            gen.append(ind)
+        for j in range(self.__ncluster):
+            for i in range (self.__nfeature):
+                min = self.__bound[i][0]
+                max = self.__bound[i][1]
+                # print(min,max)
+                dna = np.random.uniform(low=-6.5, high=13.3, size=(1))
+                # print(dna.tolist())
+                dna = dna.tolist()
+                gen.append(dna[0])
+        gen = np.array(gen)
         return gen
+        # print("GEN", gen)
+        # print("woiii ini ", gen.shape)
+        # print(ind.shape)
+        # mini = self.__bound[0]
+        # maxi = self.__bound[1]
+        # for i in range(self.__ndim):
+        #     ind = random.randint(mini, maxi-1)
+        #     gen.append(ind)
+        # return gen
 
     def __initPosition(self):
-        if self.__bound == None:
-            self.position = self.__initPositionNoBound()
-        else:
-            self.position = self.__initPositionBound()
+        self.position = self.__initPositionBound()
 
     def viewPosition(self):
         print(self.position)
@@ -52,19 +65,35 @@ class GA:
     nElit = 0
     newpop = []
     fitness = []
+    nCluster = 0
+    nfeature = 0
+    X = []
+    y = []
 
-    def __init__(self, nPop, ncluster, dim, max_itarasi,Cr,Mr,Function=None, bound=None):
+    def __init__(self, nPop, ncluster, dim, max_itarasi,Cr,Mr, X, y, Function=None):
         self.loop = max_itarasi
         self.nPop = nPop
+        self.nCluster = ncluster
+        self.nfeature = dim
         self.nDim = ncluster*dim
-        self.bound = bound
         self.function = Function
+        self.X = X
+        self.y = y
         self.mainAlgorithm(Cr, Mr)
 
     def initPosition(self):
         swarm = []
+        # print("BOOND", self.bound)
+        bon = []
+        for i in range (len(self.X[0])):
+            bin = []
+            bin.append(min(self.X[i]))
+            bin.append(max(self.X[i]))
+            bon.append(bin)
+        bond = np.array(bon)
+        self.bound = bond
         for i in range(self.nPop):
-            swarm.append(gen(self.nDim, bound=self.bound))
+            swarm.append(gen(self.nfeature,self.nCluster, bound=self.bound))
         self.pop = swarm
 
     def viewPosition(self):
@@ -73,8 +102,12 @@ class GA:
     
     def calFitness(self):
         for i in range(self.nPop):
-            fit = (self.function.fitness(
-                self.pop[i].position))
+            # print("shape individu: ",len(self.pop[i].position))
+            # print("CLUSTER ", i , self.nCluster, self.nfeature)
+            arr_2d = np.reshape(self.pop[i].position,(
+                self.nCluster, self.nfeature))
+
+            fit = (self.function.fitness(arr_2d))
             self.pop[i].fitness = fit
     
     def viewFitness(self):
@@ -153,21 +186,22 @@ class GA:
 
     def mainAlgorithm(self, cr,mr):
         self.initPosition()
-        self.viewPosition()
+        # self.viewPosition()
         error = []
         for i in range(self.loop):
+            pass
             self.calFitness()   #calculate Fitness
-            self.getGbest()     #find Gbest
-            self.elitisme()     #elitisme
-            #crossover
-            for i in range(
-                    self.nElit,self.nPop-math.floor(mr*self.nPop),2):
-                selected = self.pickParent()
-                self.crossover(selected[i],selected[i+1],cr)
-            self.mutation(mr)   #mutation
-            self.replacePop()   #replace oldPop with newPop
-            error.append(self.bestFitness)
-            self.fitness.append(self.bestFitness)
-        plt.plot(error)
-        plt.show()
+        #     self.getGbest()     #find Gbest
+        #     self.elitisme()     #elitisme
+        #     #crossover
+        #     for i in range(
+        #             self.nElit,self.nPop-math.floor(mr*self.nPop),2):
+        #         selected = self.pickParent()
+        #         self.crossover(selected[i],selected[i+1],cr)
+        #     self.mutation(mr)   #mutation
+        #     self.replacePop()   #replace oldPop with newPop
+        #     error.append(self.bestFitness)
+        #     self.fitness.append(self.bestFitness)
+        # plt.plot(error)
+        # plt.show()
             # print("best individu =",self.bestInd)

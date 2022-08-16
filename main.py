@@ -16,17 +16,18 @@ if __name__ == '__main__':
     dataset = class_dataset()
     dataset.irisDataset()
     baris,dim =dataset.X.shape
+    # print("dimdim :",dim)
     nCluster = 3
 
     #GA
-    nPop = 10
+    nPop = 1
     Cr = 0.8
     maxloop = 5
     Mr = 0.2
     objektif = step()
-    obj = GA(nPop, nCluster,dim, maxloop, Cr, Mr, objektif)
+    obj = GA(nPop, nCluster,dim, maxloop, Cr, Mr, dataset.X, dataset.y, objektif)
     print(obj.fitness)
-    print("best :",obj.bestInd)
+    # print("best :",obj.bestInd)
 
     # initCentroids = np.array([[1,1],[0,0]])
     initCentroids = []
@@ -36,4 +37,5 @@ if __name__ == '__main__':
     obj_kmeans.get_davies_bouldin()
     obj_kmeans.get_V_measure()
 
-
+    #random with range
+    print(np.random.uniform(low=-6.5, high=13.3, size=(2, 3)))
