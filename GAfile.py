@@ -238,5 +238,5 @@ class GA:
             print(self.fitness)
         plt.plot(error)
         plt.show()
-        #     print("best individu =",self.bestInd)
+        print("best individu =",self.bestInd)
         #   fix selesai
