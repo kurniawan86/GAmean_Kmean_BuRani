@@ -31,7 +31,7 @@ class gen:
                 min = self.__bound[i][0]
                 max = self.__bound[i][1]
                 # print(min,max)
-                dna = np.random.uniform(low=-6.5, high=13.3, size=(1))
+                dna = np.random.uniform(low=min, high=max, size=(1))
                 # print(dna.tolist())
                 dna = dna.tolist()
                 gen.append(dna[0])
@@ -104,9 +104,9 @@ class GA:
         for i in range(self.nPop):
             # print("shape individu: ",len(self.pop[i].position))
             # print("CLUSTER ", i , self.nCluster, self.nfeature)
+            # print("len position ", len(self.pop[i].position))
             arr_2d = np.reshape(self.pop[i].position,(
                 self.nCluster, self.nfeature))
-
             fit = (self.function.fitness(arr_2d))
             self.pop[i].fitness = fit
     
@@ -115,17 +115,18 @@ class GA:
             print("fitness : ", self.pop[i].fitness)
             
     def getGbest(self):
-        i = self.__findGbestMin()
+        i = self.__findGbestMax()
         self.bestInd = self.pop[i].position
         self.bestFitness = self.pop[i].fitness
     
-    def __findGbestMin(self):
+    def __findGbestMax(self):
         mini = self.pop[0].fitness
         index = 0
         for i in range(self.nPop):
-            if mini > self.pop[i].fitness:
+            print("GGG ", self.pop[i].fitness)
+            if self.pop[i].fitness > mini:
                 index = i
-                mini = self.pop[i].fitness
+                mini = self.pop[index].fitness
         return index
 
     def __selec_turnamen(self):
@@ -149,39 +150,63 @@ class GA:
             offspringB = list(np.array(offspring2)*c2)
             offspringC = list(np.array(offspring1)*c2)
             offspringD = list(np.array(offspring2)*c1)
-            self.add_newPop(offspringA+offspringB)
+            asu1 = self.tambahtambahan(offspring1, offspringB)
+            print("offspring1 :",offspring1)
+            print("asu1 :",asu1)
+            self.add_newPop(asu1)
+            self.add_newPop(self.tambahtambahan(offspring2, offspringA))
+            # asu = offspringA+offspringB
+            # print("offspringA ",len(offspringA))
+            # print("ASU", len(asu))
             self.add_newPop(offspringC)
         else:
             self.add_newPop(offspring1)
             self.add_newPop(offspring2)
+
+    def tambahtambahan(self,x1,x2):
+        n = len(x1)
+        new = []
+        for i in range(n):
+            new.append((x1[i]+x2[i])*1.1)
+        return new
+
 
     def kawin_polygamy(self):
         pass
 
     def mutation(self,Mr):
         mut = math.floor(self.nPop * Mr)
+        # print("mut :",mut)
         for i in range(mut):
             child = []
+            print("nDim :", self.nDim)
             for j in range(self.nDim):
-                child.append(rnd.rand())
+                child.append(rnd.rand()*10)
             self.add_newPop(child)
 
     def elitisme(self):
         n = self.nPop
+        self.newpop = []
         if n % 2 == 0:
+            # print("genap ")
             self.add_newPop(self.bestInd)
             self.add_newPop(self.bestInd)
             self.nElit = 2
         else:
+            # print("ganjil ")
             self.add_newPop(self.bestInd)
             self.nElit = 1
 
     def add_newPop(self, pop):
+        # print ( (pop))
         self.newpop.append(pop)
 
     def replacePop(self):
+        # print("len nPop :",self.nPop)
         for i in range(self.nPop):
+            # print("NEW POP :", i, " ", len(self.newpop[i]))
             self.pop[i].position = self.newpop[i]
+
         self.newpop = []
 
     def mainAlgorithm(self, cr,mr):
@@ -189,19 +214,29 @@ class GA:
         # self.viewPosition()
         error = []
         for i in range(self.loop):
-            pass
+            # self.viewFitness()
+            print("best best ",self.bestFitness)
             self.calFitness()   #calculate Fitness
-        #     self.getGbest()     #find Gbest
-        #     self.elitisme()     #elitisme
-        #     #crossover
-        #     for i in range(
-        #             self.nElit,self.nPop-math.floor(mr*self.nPop),2):
-        #         selected = self.pickParent()
-        #         self.crossover(selected[i],selected[i+1],cr)
-        #     self.mutation(mr)   #mutation
-        #     self.replacePop()   #replace oldPop with newPop
-        #     error.append(self.bestFitness)
-        #     self.fitness.append(self.bestFitness)
-        # plt.plot(error)
-        # plt.show()
-            # print("best individu =",self.bestInd)
+            # self.viewFitness()
+            self.getGbest()     #find Gbest
+            # print("======")
+            self.elitisme()     #elitisme
+            # print(self.newpop)
+            # print("======")
+            # print(self.newpop)
+            # crossover
+            for i in range(
+                    self.nElit,self.nPop-math.floor(mr*self.nPop),2):
+                selected = self.pickParent()
+                # print("print selected ", len(selected))
+                self.crossover(selected[i],selected[i+1],cr)
+            self.mutation(mr)   #mutation
+            # print(len(self.newpop[1]))
+            self.replacePop()   #replace oldPop with newPop
+            error.append(self.bestFitness)
+            self.fitness.append(self.bestFitness)
+            print(self.fitness)
+        plt.plot(error)
+        plt.show()
+        #     print("best individu =",self.bestInd)
+        #   fix selesai
