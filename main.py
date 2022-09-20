@@ -21,31 +21,41 @@ if __name__ == '__main__':
     nCluster = 3
 
     #GA
-    nPop = 10
-    Cr = 0.8
-    maxloop = 1
-    Mr = 0.2
+    nPop = 20
+    Cr = 0.7
+    maxloop = 100
+    Mr = 0.1
     objektif = step()
-    obj = GA(nPop, nCluster,dim, maxloop, Cr, Mr, dataset.X, dataset.y, objektif)
+    obj = GA(nPop, nCluster,  dim, maxloop, Cr, Mr, dataset.X, dataset.y, objektif)
     # print(obj.fitness)
     bestGA = obj.bestInd
     # print("len dim ",len(dataset.X[0]))
 
     arr = np.array(bestGA)
-    arr_2d = np.reshape(arr, nCluster,(len(dataset.X[0])))
-    print("tes 2 dimension ", arr_2d)
+    # print("ARRR :",arr)
+    arr_2d = np.reshape(arr,(nCluster, len(dataset.X[0])))
+    # print("tes 2 dimension ", arr_2d)
 
-    #TESTING MY K-MEANS
+
+    # TESTING MY K-MEANS
     # objCluster = myKmeans(dataset.X, nCluster, bestGA)
     # objCluster.printout()
 
-    # # initCentroidse = np.array([[1,1],[0,0]])
-    # initCentroids = []
-    # obj_kmeans = class_kmeans(dataset.X,dataset.y, nCluster, initCentroid=bestGA)
-    # obj_kmeans.get_SSE()
-    # obj_kmeans.get_silhouette()
-    # obj_kmeans.get_davies_bouldin()
-    # obj_kmeans.get_V_measure()
+    # initCentroids = np.array([[1,1],[0,0]])
+    print("===================")
+    obj_kmeans = class_kmeans(dataset.X,dataset.y, nCluster, initCentroid=arr_2d)
+    obj_kmeans.get_SSE()
+    obj_kmeans.get_silhouette()
+    obj_kmeans.get_davies_bouldin()
+    obj_kmeans.get_V_measure()
+
+    print("===================")
+    initCentroids = []
+    obj_kmeans1 = class_kmeans(dataset.X,dataset.y, nCluster, initCentroid=initCentroids)
+    obj_kmeans1.get_SSE()
+    obj_kmeans1.get_silhouette()
+    obj_kmeans1.get_davies_bouldin()
+    obj_kmeans1.get_V_measure()
 
     #random with range
     # print(np.random.uniform(low=-6.5, high=13.3, size=(2, 3)))

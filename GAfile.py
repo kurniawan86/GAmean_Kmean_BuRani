@@ -123,7 +123,7 @@ class GA:
         mini = self.pop[0].fitness
         index = 0
         for i in range(self.nPop):
-            print("GGG ", self.pop[i].fitness)
+            # print("GGG ", self.pop[i].fitness)
             if self.pop[i].fitness > mini:
                 index = i
                 mini = self.pop[index].fitness
@@ -151,8 +151,8 @@ class GA:
             offspringC = list(np.array(offspring1)*c2)
             offspringD = list(np.array(offspring2)*c1)
             asu1 = self.tambahtambahan(offspring1, offspringB)
-            print("offspring1 :",offspring1)
-            print("asu1 :",asu1)
+            # print("offspring1 :",offspring1)
+            # print("asu1 :",asu1)
             self.add_newPop(asu1)
             self.add_newPop(self.tambahtambahan(offspring2, offspringA))
             # asu = offspringA+offspringB
@@ -179,7 +179,7 @@ class GA:
         # print("mut :",mut)
         for i in range(mut):
             child = []
-            print("nDim :", self.nDim)
+            # print("nDim :", self.nDim)
             for j in range(self.nDim):
                 child.append(rnd.rand()*10)
             self.add_newPop(child)
@@ -215,7 +215,7 @@ class GA:
         error = []
         for i in range(self.loop):
             # self.viewFitness()
-            print("best best ",self.bestFitness)
+            # print("best best ",self.bestFitness)
             self.calFitness()   #calculate Fitness
             # self.viewFitness()
             self.getGbest()     #find Gbest
@@ -235,8 +235,8 @@ class GA:
             self.replacePop()   #replace oldPop with newPop
             error.append(self.bestFitness)
             self.fitness.append(self.bestFitness)
-            print(self.fitness)
+            # print(self.fitness)
         plt.plot(error)
         plt.show()
-        print("best individu =",self.bestInd)
+        # print("best individu =",self.bestInd)
         #   fix selesai

@@ -23,13 +23,27 @@ class class_kmeans:
     def clustering(self):
         # print(len(self.init_centroids))
         if len(self.init_centroids) == 0:
-            kmeans = KMeans(n_clusters=self.nCluster).fit(self.X)
+            kmeans = KMeans(n_clusters=self.nCluster,
+                            random_state=0,
+                            n_init=1,
+                            max_iter=50,
+                            verbose=2,
+                            init='random').fit(self.X)
+            print("Kmeans non Init")
         else:
-            kmeans = KMeans(n_clusters=self.nCluster, init=self.init_centroids).fit(self.X)
+            print("Kmeans with init")
+            kmeans = KMeans(
+                n_clusters=self.nCluster,
+                init=self.init_centroids,
+                random_state=0,
+                max_iter=50,
+                n_init=1,
+                verbose=2).fit(self.X)
         self.y_pred = kmeans.labels_
         self.centroids = kmeans.cluster_centers_
-        # print(kmeans.score(self.data))
+        # print("def clustering:centroid ",self.centroids)
         self.SSE = kmeans.inertia_
+        print("loop max: ",kmeans.n_iter_)
 
     def get_V_measure(self):
         acc = v_measure_score(self.y, self.y_pred)
