@@ -6,6 +6,7 @@ from my_kmeans import myKmeans
 from DatasetPublic import class_dataset
 from GAfile import GA
 from objectiveFile import step
+from GA_Polygamy import GAPoly
 #
 # def readDataExcel():
 #     file = pd.read_excel(open('borneo.xlsx', 'rb'))
@@ -42,21 +43,27 @@ if __name__ == '__main__':
     # objCluster.printout()
 
     # initCentroids = np.array([[1,1],[0,0]])
-    print("===================")
-    obj_kmeans = class_kmeans(dataset.X,dataset.y, nCluster, initCentroid=arr_2d)
-    obj_kmeans.get_SSE()
-    obj_kmeans.get_silhouette()
-    obj_kmeans.get_davies_bouldin()
-    obj_kmeans.get_V_measure()
+    # print("===================")
+    # print("GA")
+    # obj_kmeans = class_kmeans(dataset.X,dataset.y, nCluster, initCentroid=arr_2d)
+    # obj_kmeans.get_SSE()
+    # obj_kmeans.get_silhouette()
+    # obj_kmeans.get_davies_bouldin()
+    # obj_kmeans.get_V_measure()
+    #
+    # print("===================")
+    # print("K- means")
+    # initCentroids = []
+    # obj_kmeans1 = class_kmeans(dataset.X,dataset.y, nCluster, initCentroid=initCentroids)
+    # obj_kmeans1.get_SSE()
+    # obj_kmeans1.get_silhouette()
+    # obj_kmeans1.get_davies_bouldin()
+    # obj_kmeans1.get_V_measure()
 
     print("===================")
-    initCentroids = []
-    obj_kmeans1 = class_kmeans(dataset.X,dataset.y, nCluster, initCentroid=initCentroids)
-    obj_kmeans1.get_SSE()
-    obj_kmeans1.get_silhouette()
-    obj_kmeans1.get_davies_bouldin()
-    obj_kmeans1.get_V_measure()
-
+    print("GA Poly")
+    obj = GAPoly(nPop, nCluster, dim, maxloop, Cr, Mr, dataset.X, dataset.y, 4, objektif)
+    print("===================")
     #random with range
     # print(np.random.uniform(low=-6.5, high=13.3, size=(2, 3)))
     # asu = np.array([[2, 5, 4],
