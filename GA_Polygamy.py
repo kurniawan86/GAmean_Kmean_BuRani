@@ -71,9 +71,9 @@ class GAPoly:
     nfeature = 0
     X = []
     y = []
-    nMate = 0
+    mate = 0
 
-    def __init__(self, nPop, ncluster, dim, max_itarasi,Cr,Mr, X, y, nmate, Function=None ):
+    def __init__(self, nmate, nPop, ncluster, dim, max_itarasi,Cr,Mr, X, y , Function=None ):
         self.loop = max_itarasi
         self.nPop = nPop
         self.nCluster = ncluster
@@ -81,9 +81,9 @@ class GAPoly:
         self.nDim = ncluster*dim
         self.function = Function
         self.X = X
+        self.mate = nmate
         self.y = y
         self.mainAlgorithm(Cr, Mr)
-        self.nMate = 4
 
     def initPosition(self):
         swarm = []
@@ -105,7 +105,7 @@ class GAPoly:
         # self.viewPosition()
         error = []
         # print(self.pop[0].viewPosition())
-        for i in range(self.loop):
+        for j in range(self.loop):
             # self.viewFitness()
             # print("best best ",self.bestFitness)
             self.calFitness()   #calculate Fitness
@@ -113,6 +113,26 @@ class GAPoly:
             self.getGbest()     #find Gbest
             # print("======")
             self.elitisme()
+            for i in range(
+                    self.nElit, self.nPop - math.floor(mr * self.nPop), self.mate):
+                # selected = self.pickParent()
+                # print("print selected ", len(selected))
+                # print("IIII :",i)
+                count = i % self.mate
+                selected = self.pickParent()
+                male = selected[i]
+                for k in range(self.mate):
+                    selected = self.pickParent()
+                    female = selected[i+1]
+                    self.crossover(male, female, cr)
+            self.mutation(mr)  # mutation
+            # print(len(self.newpop[1]))
+            self.replacePop()  # replace oldPop with newPop
+            error.append(self.bestFitness)
+            self.fitness.append(self.bestFitness)
+            # print(self.fitness)
+        plt.plot(error)
+        plt.show()
 
     def add_newPop(self, pop):
         # print ( (pop))
@@ -168,3 +188,57 @@ class GAPoly:
         selected = [self.__selec_turnamen() for _ in range(self.nPop)]
         return selected
 
+    def __selec_turnamen(self):
+        selec = np.random.randint(self.nPop)
+        for xi in np.random.randint(0,self.nPop,3):
+            if self.pop[xi].fitness < self.pop[selec].fitness:
+                selec = xi
+        return self.pop[selec].position
+
+    def crossover(self, p1, p2, Cr):
+        offspring = []
+        offspring1 , offspring2 = p1.copy(), p2.copy()
+        if rnd.rand() < Cr:
+            c1 = rnd.rand()
+            c2 = 1 - c1
+            offspringA = list(np.array(offspring1)*c1)
+            offspringB = list(np.array(offspring2)*c2)
+            offspringC = list(np.array(offspring1)*c2)
+            offspringD = list(np.array(offspring2)*c1)
+            asu1 = self.tambahtambahan(offspring1, offspringB)
+            # print("offspring1 :",offspring1)
+            # print("asu1 :",asu1)
+            self.add_newPop(asu1)
+            self.add_newPop(self.tambahtambahan(offspring2, offspringA))
+            # asu = offspringA+offspringB
+            # print("offspringA ",len(offspringA))
+            # print("ASU", len(asu))
+            self.add_newPop(offspringC)
+        else:
+            self.add_newPop(offspring1)
+            self.add_newPop(offspring2)
+
+    def tambahtambahan(self,x1,x2):
+        n = len(x1)
+        new = []
+        for i in range(n):
+            new.append((x1[i]+x2[i])*1.1)
+        return new
+
+    def mutation(self,Mr):
+        mut = math.floor(self.nPop * Mr)
+        # print("mut :",mut)
+        for i in range(mut):
+            child = []
+            # print("nDim :", self.nDim)
+            for j in range(self.nDim):
+                child.append(rnd.rand()*10)
+            self.add_newPop(child)
+
+    def replacePop(self):
+        # print("len nPop :",self.nPop)
+        for i in range(self.nPop):
+            # print("NEW POP :", i, " ", len(self.newpop[i]))
+            self.pop[i].position = self.newpop[i]
+
+        self.newpop = []

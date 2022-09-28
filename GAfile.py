@@ -213,7 +213,7 @@ class GA:
         self.initPosition()
         # self.viewPosition()
         error = []
-        for i in range(self.loop):
+        for j in range(self.loop):
             # self.viewFitness()
             # print("best best ",self.bestFitness)
             self.calFitness()   #calculate Fitness
