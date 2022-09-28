@@ -14,12 +14,29 @@ from GA_Polygamy import GAPoly
 #     return np.array(dframe)
 
 if __name__ == '__main__':
-    # data = readDataExcel()
+    # # dataset iris
+    # dataset = class_dataset()
+    # dataset.irisDataset()
+    # baris,dim =dataset.X.shape
+    # nCluster = 3
+
+    # # dataset wine
+    # dataset = class_dataset()
+    # dataset.wineDataset()
+    # baris, dim = dataset.X.shape
+    # nCluster = 2
+
+    # # dataset wine
+    # dataset = class_dataset()
+    # dataset.breast_cancerDataset()
+    # baris, dim = dataset.X.shape
+    # nCluster = 2
+
+    # dataset diabetes
     dataset = class_dataset()
-    dataset.irisDataset()
-    baris,dim =dataset.X.shape
-    # print("dimdim :",dim)
-    nCluster = 3
+    dataset.diabetesDataset()
+    baris, dim = dataset.X.shape
+    nCluster = 2
 
     #GA
     nPop = 20
@@ -35,12 +52,12 @@ if __name__ == '__main__':
     # objCluster = myKmeans(dataset.X, nCluster, bestGA)
     # objCluster.printout()
 
-    # initCentroids = np.array([[1,1],[0,0]])
-    # print("===================")
+    print("===================")
     print("GA")
     obj = GA(nPop, nCluster, dim, maxloop, Cr, Mr, dataset.X, dataset.y, objektif)
     bestGA = obj.bestInd
     arr = np.array(bestGA)
+    print(len(dataset.X[0]))
     arr_2d = np.reshape(arr, (nCluster, len(dataset.X[0])))
     obj_kmeans = class_kmeans(dataset.X,dataset.y, nCluster, initCentroid=arr_2d)
     obj_kmeans.get_SSE()
@@ -71,9 +88,3 @@ if __name__ == '__main__':
     obj_kmeans2.get_davies_bouldin()
     obj_kmeans2.get_V_measure()
     print("===================")
-    #random with range
-    # print(np.random.uniform(low=-6.5, high=13.3, size=(2, 3)))
-    # asu = np.array([[2, 5, 4],
-    #    [3, 3, 4],[3,3,3]])
-    # ob = step()
-    # ob.fitness(asu)
