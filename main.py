@@ -33,10 +33,16 @@ if __name__ == '__main__':
     # nCluster = 2
 
     # dataset diabetes
+    # - irisDataset
+    # - wineDataset
+    # - breast_cancerDataset
+    # - diabetesDataset
+    # - artificialDataset
     dataset = class_dataset()
-    dataset.diabetesDataset()
+    dataset.irisDataset()
     baris, dim = dataset.X.shape
-    nCluster = 2
+    nCluster = len(set(dataset.y))
+    print("n cluster: ",nCluster)
 
     #GA
     nPop = 20
@@ -53,17 +59,17 @@ if __name__ == '__main__':
     # objCluster.printout()
 
     print("===================")
-    print("GA")
+    print("GA INIT")
     obj = GA(nPop, nCluster, dim, maxloop, Cr, Mr, dataset.X, dataset.y, objektif)
     bestGA = obj.bestInd
     arr = np.array(bestGA)
-    print(len(dataset.X[0]))
     arr_2d = np.reshape(arr, (nCluster, len(dataset.X[0])))
     obj_kmeans = class_kmeans(dataset.X,dataset.y, nCluster, initCentroid=arr_2d)
     obj_kmeans.get_SSE()
     obj_kmeans.get_silhouette()
     obj_kmeans.get_davies_bouldin()
     obj_kmeans.get_V_measure()
+    obj_kmeans.get_centroids()
 
     print("===================")
     print("K- means")
@@ -73,9 +79,10 @@ if __name__ == '__main__':
     obj_kmeans1.get_silhouette()
     obj_kmeans1.get_davies_bouldin()
     obj_kmeans1.get_V_measure()
+    obj_kmeans1.get_centroids()
 
     print("===================")
-    print("GA Poly")
+    print("GA Poly INIT")
     nmate = 4
     obj1 = GAPoly(
         nmate,nPop, nCluster, dim, maxloop, Cr, Mr, dataset.X, dataset.y , objektif)
@@ -87,4 +94,5 @@ if __name__ == '__main__':
     obj_kmeans2.get_silhouette()
     obj_kmeans2.get_davies_bouldin()
     obj_kmeans2.get_V_measure()
+    obj_kmeans2.get_centroids()
     print("===================")

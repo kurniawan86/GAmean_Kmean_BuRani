@@ -64,3 +64,6 @@ class class_kmeans:
         print("Davies Boundies  :",z)
         return z
 
+    def get_centroids(self):
+        print("centroids :", self.centroids)
+

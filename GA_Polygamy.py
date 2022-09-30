@@ -38,15 +38,6 @@ class gen:
                 gen.append(dna[0])
         gen = np.array(gen)
         return gen
-        # print("GEN", gen)
-        # print("woiii ini ", gen.shape)
-        # print(ind.shape)
-        # mini = self.__bound[0]
-        # maxi = self.__bound[1]
-        # for i in range(self.__ndim):
-        #     ind = random.randint(mini, maxi-1)
-        #     gen.append(ind)
-        # return gen
 
     def __initPosition(self):
         self.position = self.__initPositionBound()
