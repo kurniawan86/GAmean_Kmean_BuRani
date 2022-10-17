@@ -38,8 +38,11 @@ if __name__ == '__main__':
     # - breast_cancerDataset
     # - diabetesDataset
     # - artificialDataset
+    # - artificialDataset3D
+    # - dataset_MobilePhone
+
     dataset = class_dataset()
-    dataset.irisDataset()
+    dataset.dataset_MobilePhone()
     baris, dim = dataset.X.shape
     nCluster = len(set(dataset.y))
     print("n cluster: ",nCluster)
@@ -52,7 +55,6 @@ if __name__ == '__main__':
     objektif = step()
 
     # print("tes 2 dimension ", arr_2d)
-
 
     # TESTING MY K-MEANS
     # objCluster = myKmeans(dataset.X, nCluster, bestGA)

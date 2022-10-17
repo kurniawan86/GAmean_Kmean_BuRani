@@ -50,3 +50,25 @@ class class_dataset:
         for i in range(len(y)):
            yy.append(y[i][0])
         self.y = yy
+
+    def artificialDataset3D(self):
+        file = pd.read_excel(open('dataartificial2.xlsx', 'rb'))
+        X = pd.DataFrame(file, columns=(['x', 'y', 'z']))
+        self.X = np.array(X)
+        y = pd.DataFrame(file, columns=(['cluster']))
+        y = np.array(y)
+        yy = []
+        for i in range(len(y)):
+           yy.append(y[i][0])
+        self.y = yy
+
+    def dataset_MobilePhone(self):
+        df = genfromtxt('train_mobile.csv.xls',delimiter=',',skip_header=1)
+        # print(df.shape)
+        self.X = df[:,0:20]
+        y = df[:,20:21]
+        yy = []
+        for i in range(len(y)):
+            # print(y[i][0])
+            yy.append(y[i][0])
+        self.y = yy
