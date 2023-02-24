@@ -35,7 +35,7 @@ class class_dataset:
         self.X = df[:,0:8]
         y = df[:,8:9]
         yy = []
-        for i in range (len(y)):
+        for i in range(len(y)):
             # print(y[i][0])
             yy.append(y[i][0])
         self.y = yy
@@ -72,3 +72,8 @@ class class_dataset:
             # print(y[i][0])
             yy.append(y[i][0])
         self.y = yy
+
+    def dataset_riau(self):
+        df = genfromtxt('riau.csv.xls',delimiter=',',skip_header=1)
+        self.X = df[:, 3:5]
+        self.y = []

@@ -153,7 +153,7 @@ class GAPoly:
             # print("len position ", len(self.pop[i].position))
             arr_2d = np.reshape(self.pop[i].position,(
                 self.nCluster, self.nfeature))
-            fit = (self.function.fitness(arr_2d))
+            fit = (self.function.fitness2(arr_2d, self.X))
             self.pop[i].fitness = fit
 
     def viewFitness(self):

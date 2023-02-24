@@ -13,6 +13,7 @@ class class_kmeans:
     centroids = []
     SSE = []
 
+
     def __init__(self, X,y, ncluster, initCentroid =None):
         self.X = X
         self.y = y
@@ -65,5 +66,5 @@ class class_kmeans:
         return z
 
     def get_centroids(self):
-        print("centroids :", self.centroids)
+        print("centroids sklean :", self.centroids)
 
